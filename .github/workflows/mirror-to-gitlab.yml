@@ -1,0 +1,23 @@
+
+name: Mirror to GitLab
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror repository
+        run: |
+          git clone --mirror "https://github.com/${GITHUB_REPOSITORY}.git" repo.git
+          cd repo.git
+          git push --mirror "https://oauth2:${{ secrets.GITLAB_TOKEN }}@gitlab.com/Ghost2476/mypage.git"
